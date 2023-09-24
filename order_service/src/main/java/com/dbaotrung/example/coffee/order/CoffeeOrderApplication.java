@@ -8,15 +8,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
 
-@SpringBootApplication(scanBasePackages = {"com.dbaotrung.example.coffee.order"})
+@SpringBootApplication(scanBasePackages = {"com.dbaotrung.example.coffee.order", "com.dbaotrung.example.coffee.order.model"})
 @EnableJpaRepositories
-@EntityScan(basePackages = {"com.dbaotrung.example.coffee.order.mode"}, basePackageClasses = {CoffeeOrder.class})
-public class OrderApplication {
+@EntityScan(basePackages = {"com.dbaotrung.example.coffee.order.model"}, basePackageClasses = {CoffeeOrder.class})
+@ComponentScan(basePackages = {"com.dbaotrung.example.coffee.order"})
+public class CoffeeOrderApplication {
 
     public static void main(String[] args) {
         String logFileNameDefault = "order_app";
@@ -28,9 +30,9 @@ public class OrderApplication {
             System.setProperty(CommonConstants.LOGBACK_FILE_NAME_KEY, logFileNameDefault);
         }
 
-        SpringApplicationBuilder app = new SpringApplicationBuilder(OrderApplication.class);
+        SpringApplicationBuilder app = new SpringApplicationBuilder(CoffeeOrderApplication.class);
         File file = new File(CommonConstants.LOGBACK_FILE_PATH_DEFAULT + "/" + logFileNameDefault + "_shutdown.pid");
-        Logger log = LoggerFactory.getLogger(OrderApplication.class);
+        Logger log = LoggerFactory.getLogger(CoffeeOrderApplication.class);
         log.info("Log folder path [{}]", System.getProperty(CommonConstants.LOGBACK_FILE_PATH_KEY));
         log.info("Generated PID file {}", file.getAbsolutePath());
         log.info("Log file name [{}]", System.getProperty(CommonConstants.LOGBACK_FILE_NAME_KEY));
