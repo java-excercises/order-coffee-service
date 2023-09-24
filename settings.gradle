@@ -1,1 +1,3 @@
-rootProject.name = 'order-coffee-service'
+rootProject.name = 'coffee-shop'
+
+include "order-coffee-service"
