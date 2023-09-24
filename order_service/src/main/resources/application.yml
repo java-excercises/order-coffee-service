@@ -1,5 +1,5 @@
 #Logging
-logging.config: classpath:logback-xxx.xml
+logging.config: classpath:logback.xml
 
 server:
   shutdown: graceful
@@ -34,6 +34,10 @@ spring:
       minimum-idle: 2
       idle-timeout: 30000
       pool-name: order_pool
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

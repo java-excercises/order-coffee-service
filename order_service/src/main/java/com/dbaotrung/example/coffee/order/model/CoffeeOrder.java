@@ -8,15 +8,15 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "coffee_order")
 @Data
-public class Order {
+public class CoffeeOrder {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @JdbcTypeCode(SqlTypes.JSON)
-    private List<OrderItem> items;
+//    @JdbcTypeCode(SqlTypes.JSON)
+//    private List<OrderItem> items;
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
     private OrderStatus orderStatus;
