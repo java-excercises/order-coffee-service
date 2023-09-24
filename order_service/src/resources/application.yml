@@ -1,5 +1,5 @@
 #Logging
-logging.config: classpath:logback.xml
+logging.config: classpath:logback-xxx.xml
 
 server:
   shutdown: graceful
@@ -23,6 +23,17 @@ spring:
       local-time-format: HH:mm
       local-date-format: YYYY-MM-dd
       zoned-date-time-format: ${spring.jackson.date-format}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/coffee_shop_order
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: SELECT 1
+      maximum-pool-size: 10 # Adjust as needed
+      minimum-idle: 2
+      idle-timeout: 30000
+      pool-name: order_pool
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

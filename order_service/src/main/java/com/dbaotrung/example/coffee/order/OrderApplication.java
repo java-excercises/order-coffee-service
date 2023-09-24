@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 
-@SpringBootApplication(scanBasePackages = {"com.kbtg.kuniv", "tech.corefinance.common"})
+@SpringBootApplication(scanBasePackages = {"com.dbaotrung.example.coffee.order"})
 public class OrderApplication {
 
     public static void main(String[] args) {

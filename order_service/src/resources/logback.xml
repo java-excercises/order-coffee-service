@@ -29,13 +29,10 @@
 	</appender>
 
 	<!-- Logs for APIs classes -->
-	<logger name="com.kbtg.kuniv" level="DEBUG" />
-	<logger name="com.kbtg.kuniv.common.util" level="ERROR" />
-	<logger name="com.kbtg.kuniv.common.services.JwtServiceImpl" level="ERROR" />
+	<logger name="com.dbaotrung.example.coffee" level="DEBUG" />
 
 	<!-- Spring framework logs. Should not turn to debug unless you know what you're doing. It's annoyed!!! -->
 	<logger name="org.springframework" level="ERROR" />
-	<logger name="org.springframework.security" level="DEBUG" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

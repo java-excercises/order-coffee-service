@@ -1,10 +1,40 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		dependencies {
+			classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootPluginVersion")
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootPluginVersion")
+		classpath "io.spring.gradle:dependency-management-plugin:$springDependenciesManagementVersion"
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:latest.release"
+		classpath "io.freefair.gradle:lombok-plugin:latest.release"
+	}
+}
+
 plugins {
+	id 'java'
+	id 'java-library'
 	id 'org.springframework.boot' version "$springBootPluginVersion"
 	id 'io.spring.dependency-management' version "$springDependenciesManagementVersion"
+	id 'jacoco'
 	id "io.freefair.lombok" version "${lombokPluginVersion}"
 	id "org.sonarqube" version "${sonarqubePluginVersion}"
 	id "application"
 	id("org.hibernate.orm") version "${hibernatePluginVersion}"
+}
+
+group = 'com.dbaotrung.example'
+version = "${projectVersion}"
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven {
+		url = "https://s01.oss.sonatype.org/content/groups/public/"
+	}
 }
 
 dependencyManagement {
@@ -14,17 +44,102 @@ dependencyManagement {
 	}
 }
 
-mainClassName = "com.dbaotrung.example.coffee.order.OrderApplication"
+java {
+	sourceCompatibility = "${javaSourceCompatibility}"
+	targetCompatibility = "${javaSourceCompatibility}"
+}
+
+jar {
+	archiveClassifier = ""
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
 
 dependencies {
 	// Spring
-	implementation project(":common")
+	api ('org.springframework.boot:spring-boot-starter')
+	api ("org.springframework.boot:spring-boot-starter-tomcat")
+	api ('org.springframework.boot:spring-boot-starter-validation')
+	api (group: 'org.springframework.boot', name: 'spring-boot-starter-web')
+	api (group: 'org.springframework.boot', name: 'spring-boot-starter-aop')
+	api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+	// PostgreSQL
+	api group: 'org.postgresql', name: 'postgresql', version: "${postgresqlVersion}"
+	api group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernateVersion}"
+	api group: 'org.hibernate.validator', name: 'hibernate-validator', version: "${hibernateValidatorVersion}"
+	api group: 'org.hibernate.orm', name: 'hibernate-hikaricp', version: "${hibernateHikaricpVersion}"
+	// Spring doc
+	api (group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "$springDocApiVersion")
+	// Common
+	api group: 'commons-beanutils', name: 'commons-beanutils', version: "${beanutilsVersion}"
+	api group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
 
 	// Test
 	testImplementation ('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: "${powerMockitoVersion}"
 }
 
-bootJar {
-	mainClass = mainClassName
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "${jacocoToolVersion}"
+	reportsDirectory = layout.buildDirectory.dir("jacoco").get()
+}
+
+test {
+
+	useJUnitPlatform()
+
+	// report is always generated after tests run
+	finalizedBy jacocoTestReport
+
+	jacoco {
+		classDumpDir = layout.buildDirectory.file("jacoco/classpathdumps").get().asFile
+		enabled = true
+		destinationFile = layout.buildDirectory.file("jacoco/${name}.exec").get().asFile
+		includes = []
+		excludes = []
+		excludeClassLoaders = []
+		includeNoLocationClasses = false
+		sessionId = UUID.randomUUID().toString()
+		dumpOnExit = true
+		classDumpDir = null
+		output = JacocoTaskExtension.Output.FILE
+		address = "localhost"
+		port = 6300
+		jmx = false
+	}
+}
+
+jacocoTestReport {
+	// tests are required to run before generating the report
+	dependsOn test
+	mustRunAfter test
+
+	reports {
+		html.required = true
+		xml.required = true
+		csv.required = true
+		html.outputLocation = layout.buildDirectory.dir("jacoco/html").get().asFile
+		xml.outputLocation = layout.buildDirectory.file("jacoco/jacoco-report.xml").get().asFile
+		csv.outputLocation = layout.buildDirectory.file("jacoco/jacoco-report.csv").get().asFile
+	}
+
+	afterEvaluate {
+		getClassDirectories().setFrom(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'**/ex/*', '**/pojo/*', '**/model/*', '**/dto/*', '**/config/*', '**/log/*'
+			])
+		})
+	}
 }
