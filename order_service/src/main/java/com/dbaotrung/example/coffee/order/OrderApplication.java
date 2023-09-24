@@ -19,19 +19,21 @@ import java.io.File;
 public class OrderApplication {
 
     public static void main(String[] args) {
-        Logger log = LoggerFactory.getLogger(OrderApplication.class);
         String logFileNameDefault = "order_app";
         if (!StringUtils.hasText(System.getProperty(CommonConstants.LOGBACK_FILE_PATH_KEY))) {
             System.setProperty(CommonConstants.LOGBACK_FILE_PATH_KEY, CommonConstants.LOGBACK_FILE_PATH_DEFAULT);
         }
-        log.info("Log folder path [{}]", System.getProperty(CommonConstants.LOGBACK_FILE_PATH_KEY));
+
         if (!StringUtils.hasText(System.getProperty(CommonConstants.LOGBACK_FILE_NAME_KEY))) {
             System.setProperty(CommonConstants.LOGBACK_FILE_NAME_KEY, logFileNameDefault);
         }
-        log.info("Log file name [{}]", System.getProperty(CommonConstants.LOGBACK_FILE_NAME_KEY));
+
         SpringApplicationBuilder app = new SpringApplicationBuilder(OrderApplication.class);
         File file = new File(CommonConstants.LOGBACK_FILE_PATH_DEFAULT + "/" + logFileNameDefault + "_shutdown.pid");
+        Logger log = LoggerFactory.getLogger(OrderApplication.class);
+        log.info("Log folder path [{}]", System.getProperty(CommonConstants.LOGBACK_FILE_PATH_KEY));
         log.info("Generated PID file {}", file.getAbsolutePath());
+        log.info("Log file name [{}]", System.getProperty(CommonConstants.LOGBACK_FILE_NAME_KEY));
         app.build().addListeners(new ApplicationPidFileWriter(file));
         app.run(args);
     }
