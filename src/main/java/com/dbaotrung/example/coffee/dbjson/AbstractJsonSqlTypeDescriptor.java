@@ -33,6 +33,18 @@ public abstract class AbstractJsonSqlTypeDescriptor implements SqlTypeDescriptor
     @Override
     public <X> ValueExtractor<X> getExtractor(final JavaTypeDescriptor<X> javaTypeDescriptor) {
         return new BasicExtractor<X>(javaTypeDescriptor, this) {
+
+            @Override
+            public X extract(ResultSet rs, int paramIndex, WrapperOptions options) throws SQLException {
+                return javaTypeDescriptor.wrap(extractJson(rs, paramIndex), options);
+            }
+
+            @Override
+            public X extract(CallableStatement statement, String paramName, WrapperOptions options)
+                    throws SQLException {
+                return doExtract(statement, paramName, options);
+            }
+
             @Override
             protected X doExtract(ResultSet rs, String name, WrapperOptions options) throws SQLException {
                 return javaTypeDescriptor.wrap(extractJson(rs, name), options);
@@ -58,6 +70,10 @@ public abstract class AbstractJsonSqlTypeDescriptor implements SqlTypeDescriptor
 
     protected Object extractJson(CallableStatement statement, int index) throws SQLException {
         return statement.getObject(index);
+    }
+
+    protected Object extractJson(ResultSet rs, int index) throws SQLException {
+        return rs.getObject(index);
     }
 
     protected Object extractJson(CallableStatement statement, String name) throws SQLException {
