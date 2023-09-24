@@ -1,0 +1,30 @@
+plugins {
+	id 'org.springframework.boot' version "$springBootPluginVersion"
+	id 'io.spring.dependency-management' version "$springDependenciesManagementVersion"
+	id "io.freefair.lombok" version "${lombokPluginVersion}"
+	id "org.sonarqube" version "${sonarqubePluginVersion}"
+	id "application"
+	id("org.hibernate.orm") version "${hibernatePluginVersion}"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootPluginVersion"
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+mainClassName = "com.dbaotrung.example.coffee.order.OrderApplication"
+
+dependencies {
+	// Spring
+	implementation project(":common")
+
+	// Test
+	testImplementation ('org.springframework.boot:spring-boot-starter-test')
+	testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: "${powerMockitoVersion}"
+}
+
+bootJar {
+	mainClass = mainClassName
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'coffee_shop'
+
+include "common", "order_service"
