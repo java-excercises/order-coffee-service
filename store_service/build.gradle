@@ -44,12 +44,12 @@ dependencyManagement {
 	}
 }
 
+mainClassName = "com.dbaotrung.example.coffee.store.StoreApplication"
+
 java {
 	sourceCompatibility = "${javaSourceCompatibility}"
 	targetCompatibility = "${javaSourceCompatibility}"
 }
-
-mainClassName = "com.dbaotrung.example.coffee.order.CoffeeOrderApplication"
 
 configurations {
 	compileOnly {

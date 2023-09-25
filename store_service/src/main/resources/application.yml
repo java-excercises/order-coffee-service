@@ -3,12 +3,12 @@ logging.config: classpath:logback.xml
 
 server:
   shutdown: graceful
-  port: 9082
+  port: 9083
 spring:
   lifecycle:
     timeout-per-shutdown-phase: "5s"
   main:
-    allow-bean-definition-overriding: true
+    allow-bean-definition-overriding: false
   jackson:
     default-property-inclusion: NON_NULL
     serialization:
@@ -24,7 +24,7 @@ spring:
       local-date-format: YYYY-MM-dd
       zoned-date-time-format: ${spring.jackson.date-format}
   datasource:
-    url: jdbc:postgresql://localhost:5432/coffee_shop_order
+    url: jdbc:postgresql://localhost:5432/coffee_shop_store
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
