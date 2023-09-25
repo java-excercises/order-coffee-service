@@ -1,4 +1,4 @@
-package com.dbaotrung.example.coffee.common.converter.json;
+package com.dbaotrung.example.coffee.order.converter.json;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

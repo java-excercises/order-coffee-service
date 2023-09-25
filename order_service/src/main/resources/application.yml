@@ -36,7 +36,7 @@ spring:
       pool-name: order_pool
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 springdoc:
   swagger-ui:

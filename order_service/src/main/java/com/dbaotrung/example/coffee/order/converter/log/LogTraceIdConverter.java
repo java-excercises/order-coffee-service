@@ -1,6 +1,6 @@
-package com.dbaotrung.example.coffee.common.converter.log;
+package com.dbaotrung.example.coffee.order.converter.log;
 
-import com.dbaotrung.example.coffee.common.context.TraceIdContext;
+import com.dbaotrung.example.coffee.order.context.TraceIdContext;
 
 public class LogTraceIdConverter extends LogDataConverter {
 

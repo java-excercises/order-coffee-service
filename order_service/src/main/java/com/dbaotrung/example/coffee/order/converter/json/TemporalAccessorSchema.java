@@ -1,4 +1,4 @@
-package com.dbaotrung.example.coffee.common.converter.json;
+package com.dbaotrung.example.coffee.order.converter.json;
 
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.EqualsAndHashCode;

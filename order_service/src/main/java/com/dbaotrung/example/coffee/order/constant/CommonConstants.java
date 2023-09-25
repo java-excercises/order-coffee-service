@@ -1,4 +1,4 @@
-package com.dbaotrung.example.coffee.common.constant;
+package com.dbaotrung.example.coffee.order.constant;
 
 public class CommonConstants {
 

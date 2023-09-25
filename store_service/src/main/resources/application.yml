@@ -5,6 +5,10 @@ server:
   shutdown: graceful
   port: 9083
 spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
   lifecycle:
     timeout-per-shutdown-phase: "5s"
   main:
@@ -33,11 +37,7 @@ spring:
       maximum-pool-size: 10 # Adjust as needed
       minimum-idle: 2
       idle-timeout: 30000
-      pool-name: order_pool
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+      # pool-name: order_pool
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

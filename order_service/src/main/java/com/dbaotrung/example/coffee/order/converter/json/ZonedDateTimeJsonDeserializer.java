@@ -1,4 +1,4 @@
-package com.dbaotrung.example.coffee.common.converter.json;
+package com.dbaotrung.example.coffee.order.converter.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.Version;

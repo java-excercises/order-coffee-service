@@ -1,6 +1,6 @@
 package com.dbaotrung.example.coffee.order;
 
-import com.dbaotrung.example.coffee.common.constant.CommonConstants;
+import com.dbaotrung.example.coffee.order.constant.CommonConstants;
 import com.dbaotrung.example.coffee.order.model.CoffeeOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
