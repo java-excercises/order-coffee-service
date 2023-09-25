@@ -1,7 +1,7 @@
 order-coffee-service/HELP.md
 /**/.gradle
 /**/build/
-!gradle/wrapper/gradle-wrapper.jar
+!order_service/gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -35,3 +35,7 @@ order-coffee-service/HELP.md
 
 ### VS Code ###
 .vscode/
+
+
+### Custom ###
+/**/logs
