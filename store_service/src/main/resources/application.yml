@@ -57,12 +57,10 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         hbm2ddl:
-          auto: update
+          auto: create
       show-sql: true
       generate-ddl: true
-    package-to-scan: com.dbaotrung.example.coffee.store
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

@@ -4,7 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -15,8 +15,8 @@ public class CoffeeOrder {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-//    @JdbcTypeCode(SqlTypes.JSON)
-//    private List<OrderItem> items;
+    @JdbcTypeCode(SqlTypes.JSON)
+    private List<OrderItem> items;
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
     private OrderStatus orderStatus;

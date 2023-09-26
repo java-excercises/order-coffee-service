@@ -63,26 +63,30 @@ repositories {
 
 dependencies {
 	// Spring
-	api ('org.springframework.boot:spring-boot-starter')
-	api ("org.springframework.boot:spring-boot-starter-tomcat")
-	api ('org.springframework.boot:spring-boot-starter-validation')
-	api (group: 'org.springframework.boot', name: 'spring-boot-starter-web')
-	api (group: 'org.springframework.boot', name: 'spring-boot-starter-aop')
-	api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+	implementation ('org.springframework.boot:spring-boot-starter')
+	implementation ("org.springframework.boot:spring-boot-starter-tomcat")
+	implementation ('org.springframework.boot:spring-boot-starter-validation')
+	implementation (group: 'org.springframework.boot', name: 'spring-boot-starter-web')
+	implementation (group: 'org.springframework.boot', name: 'spring-boot-starter-aop')
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
 	// PostgreSQL
-	api group: 'org.postgresql', name: 'postgresql', version: "${postgresqlVersion}"
-	api group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernateVersion}"
-	api group: 'org.hibernate.validator', name: 'hibernate-validator', version: "${hibernateValidatorVersion}"
-	api group: 'org.hibernate.orm', name: 'hibernate-hikaricp', version: "${hibernateHikaricpVersion}"
+	implementation group: 'org.postgresql', name: 'postgresql', version: "${postgresqlVersion}"
+	implementation (group: 'org.hibernate', name: 'hibernate-entitymanager', version: "${hibernateVersion}") {
+		exclude group: 'javax.persistence', module: 'javax.persistence-api'
+		exclude group: 'javax.activation', module: 'javax.activation-api'
+		exclude group: 'javax.xml.bind', module: 'jaxb-api'
+	}
+	implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: "${hibernateValidatorVersion}"
+	implementation group: 'org.hibernate.orm', name: 'hibernate-hikaricp', version: "${hibernateHikaricpVersion}"
 	// Spring doc
-	api (group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "$springDocApiVersion")
+	implementation (group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "$springDocApiVersion")
 	// Common
-	api group: 'commons-beanutils', name: 'commons-beanutils', version: "${beanutilsVersion}"
-	api group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
+	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: "${beanutilsVersion}"
+	implementation group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
 
 	// Test
 	testImplementation ('org.springframework.boot:spring-boot-starter-test')
-	testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: "${powerMockitoVersion}"
+	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.5.0'
 }
 
 tasks.named('test') {

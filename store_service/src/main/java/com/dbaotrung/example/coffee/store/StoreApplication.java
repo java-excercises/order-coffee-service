@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
 
 @SpringBootApplication(scanBasePackages = {"com.dbaotrung.example.coffee.store"})
+@EnableJpaRepositories
 public class StoreApplication {
 
     public static void main(String[] args) {
