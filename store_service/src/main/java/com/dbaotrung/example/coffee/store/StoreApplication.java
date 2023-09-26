@@ -3,18 +3,14 @@ package com.dbaotrung.example.coffee.store;
 import com.dbaotrung.example.coffee.store.constant.CommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
 
 @SpringBootApplication(scanBasePackages = {"com.dbaotrung.example.coffee.store"})
-@EnableAutoConfiguration
-@EnableJpaRepositories
 public class StoreApplication {
 
     public static void main(String[] args) {
