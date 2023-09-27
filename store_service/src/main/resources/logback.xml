@@ -32,10 +32,10 @@
 	<logger name="com.dbaotrung.example.coffee" level="DEBUG" />
 
 	<!-- Spring framework logs. Should not turn to debug unless you know what you're doing. It's annoyed!!! -->
-	<logger name="org.springframework" level="DEBUG" />
-	<logger name="org.springframework.data.jpa" level="DEBUG" />
+	<logger name="org.springframework" level="WARN" />
+	<logger name="com.dbaotrung.example.coffee.store.converter.json" level="WARN" />
 	<logger name="org.hibernate" level="WARN" />
-	<logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG" />
+	<logger name="com.zaxxer.hikari.HikariConfig" level="WARN" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

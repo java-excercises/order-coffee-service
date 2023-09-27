@@ -27,17 +27,17 @@ public class ProductController {
     }
 
     @PostMapping(value = "/create-or-update")
-    public GeneralApiResponse<Product> createOrUpdateRole(@RequestBody Product product) {
+    public GeneralApiResponse<Product> createOrUpdateProduct(@RequestBody Product product) {
         return new GeneralApiResponse<>(productService.createOrUpdateProduct(product));
     }
 
     @DeleteMapping(value = "/delete")
-    public GeneralApiResponse<Boolean> deleteRole(@RequestParam("entityId") long entityId) {
+    public GeneralApiResponse<Boolean> deleteProduct(@RequestParam("productId") long entityId) {
         return new GeneralApiResponse<>(productService.deleteProduct(entityId));
     }
 
-    @GetMapping(value = "/{entityId}")
-    public GeneralApiResponse<Product> viewDetails(@PathVariable("entityId") long entityId) {
+    @GetMapping(value = "/{productId}")
+    public GeneralApiResponse<Product> viewDetails(@PathVariable("productId") long entityId) {
         return new GeneralApiResponse<>(productService.loadProductDetails(entityId));
     }
 }

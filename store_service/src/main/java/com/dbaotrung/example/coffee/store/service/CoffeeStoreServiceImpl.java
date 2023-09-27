@@ -1,7 +1,12 @@
 package com.dbaotrung.example.coffee.store.service;
 
+import com.dbaotrung.example.coffee.store.dto.MenuItemDto;
+import com.dbaotrung.example.coffee.store.dto.ProductDto;
 import com.dbaotrung.example.coffee.store.entity.CoffeeStore;
+import com.dbaotrung.example.coffee.store.entity.MenuItem;
+import com.dbaotrung.example.coffee.store.ex.ServiceHandlingException;
 import com.dbaotrung.example.coffee.store.repository.CoffeeStoreRepository;
+import com.dbaotrung.example.coffee.store.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +27,8 @@ public class CoffeeStoreServiceImpl implements CoffeeStoreService {
 
     @Autowired
     private CoffeeStoreRepository coffeeStoreRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public Page<CoffeeStore> loadAllStores(int pageSize, int pageIndex, List<Sort.Order> orders) {
@@ -79,5 +87,28 @@ public class CoffeeStoreServiceImpl implements CoffeeStoreService {
     @Override
     public CoffeeStore loadStoreDetails(long itemId) {
         return coffeeStoreRepository.findById(itemId).get();
+    }
+
+    @Override
+    public CoffeeStore updateStoreMenu(long storeId, List<MenuItemDto> menuItemDtos) {
+        var storeOptional = coffeeStoreRepository.findById(storeId);
+        if (storeOptional.isEmpty()) {
+            throw new ServiceHandlingException("store_not_found");
+        }
+        var coffeeStore = storeOptional.get();
+        List<MenuItem> menuItems = new ArrayList<>(menuItemDtos.size());
+        for(var dto : menuItemDtos) {
+            var menuItem = new MenuItem();
+            menuItem.setQuantity(dto.getQuantity());
+            menuItem.setSellingPrice(dto.getSellingPrice());
+            var productOptional = productRepository.findById(dto.getProductId());
+            if (productOptional.isEmpty()) {
+                throw new ServiceHandlingException("product_not_found");
+            }
+            var product = productOptional.get();
+            var productDto = new ProductDto(product.getId(), product.getName(), product.getOriginalPrice());
+            menuItem.setProduct(productDto);
+        }
+        return coffeeStore;
     }
 }

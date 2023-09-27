@@ -1,5 +1,6 @@
 package com.dbaotrung.example.coffee.store.service;
 
+import com.dbaotrung.example.coffee.store.dto.MenuItemDto;
 import com.dbaotrung.example.coffee.store.entity.CoffeeStore;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -15,4 +16,6 @@ public interface CoffeeStoreService {
     boolean deleteStore(long itemId);
 
     CoffeeStore loadStoreDetails(long itemId);
+
+    CoffeeStore updateStoreMenu(long storeId, List<MenuItemDto> menuItemDtos);
 }
