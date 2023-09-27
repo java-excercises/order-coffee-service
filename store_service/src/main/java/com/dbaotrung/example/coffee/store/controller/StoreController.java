@@ -32,8 +32,8 @@ public class StoreController {
         return new GeneralApiResponse<>(coffeeStoreService.createOrUpdateStore(coffeeStore));
     }
 
-    @DeleteMapping(value = "/delete")
-    public GeneralApiResponse<Boolean> deleteStore(@RequestParam("storeId") long entityId) {
+    @DeleteMapping(value = "/{storeId}")
+    public GeneralApiResponse<Boolean> deleteStore(@PathVariable("storeId") long entityId) {
         return new GeneralApiResponse<>(coffeeStoreService.deleteStore(entityId));
     }
 

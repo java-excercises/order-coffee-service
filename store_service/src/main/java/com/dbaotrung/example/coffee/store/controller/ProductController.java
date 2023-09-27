@@ -31,8 +31,8 @@ public class ProductController {
         return new GeneralApiResponse<>(productService.createOrUpdateProduct(product));
     }
 
-    @DeleteMapping(value = "/delete")
-    public GeneralApiResponse<Boolean> deleteProduct(@RequestParam("productId") long entityId) {
+    @DeleteMapping(value = "/{productId}")
+    public GeneralApiResponse<Boolean> deleteProduct(@PathVariable("productId") long entityId) {
         return new GeneralApiResponse<>(productService.deleteProduct(entityId));
     }
 
