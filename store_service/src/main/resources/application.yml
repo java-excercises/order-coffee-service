@@ -58,7 +58,7 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: create
+          auto: update
       show-sql: true
       generate-ddl: true
 springdoc:
