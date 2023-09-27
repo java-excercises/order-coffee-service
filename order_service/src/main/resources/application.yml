@@ -35,9 +35,12 @@ spring:
       idle-timeout: 30000
       pool-name: order_pool
   jpa:
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+      show-sql: true
+      generate-ddl: true
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
