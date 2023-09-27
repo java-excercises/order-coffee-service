@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import java.io.File;
 
 @SpringBootApplication(scanBasePackages = {"com.dbaotrung.example.coffee.order"})
+@EnableFeignClients(basePackages = "com.dbaotrung.example.coffee.order.client")
 public class CoffeeOrderApplication {
 
     public static void main(String[] args) {

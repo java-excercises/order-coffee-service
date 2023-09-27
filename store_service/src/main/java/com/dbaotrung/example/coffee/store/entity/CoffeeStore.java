@@ -20,5 +20,5 @@ public class CoffeeStore {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<MenuItem> menuItems;
     private String storeLocation;
-    private String maxNoQueues;
+    private int maxNoQueues;
 }

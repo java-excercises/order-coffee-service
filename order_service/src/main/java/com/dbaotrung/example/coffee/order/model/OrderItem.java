@@ -9,8 +9,8 @@ import java.util.UUID;
 @Data
 public class OrderItem implements Serializable {
 
-    private String id = UUID.randomUUID().toString();
     private ProductDto product;
     private Double sellingPrice;
     private int quantity;
+
 }
