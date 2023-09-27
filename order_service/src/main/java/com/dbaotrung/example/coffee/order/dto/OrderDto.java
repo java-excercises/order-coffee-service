@@ -17,8 +17,7 @@ public class OrderDto {
     private double vat;
     private double total;
     private long storeId;
-    private String queueId;
-    private int queueIndex;
+    private long queueId;
 
     public static OrderDto fromEntity(CoffeeOrder coffeeOrder) {
         var result = new OrderDto();
@@ -29,7 +28,6 @@ public class OrderDto {
         result.setSubTotal(coffeeOrder.getSubTotal());
         result.setQueueId(coffeeOrder.getQueueId());
         result.setStoreId(coffeeOrder.getStoreId());
-        result.setQueueIndex(coffeeOrder.getQueueIndex());
         var orderItems = coffeeOrder.getItems();
         var items = new ArrayList<OrderItemDto>(orderItems.size());
         orderItems.forEach( it -> items.add(OrderItemDto.fromEntity(it)));

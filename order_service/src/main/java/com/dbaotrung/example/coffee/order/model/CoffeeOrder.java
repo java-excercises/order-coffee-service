@@ -25,6 +25,5 @@ public class CoffeeOrder {
     private double vat;
     private double total;
     private long storeId;
-    private String queueId;
-    private int queueIndex;
+    private long queueId;
 }

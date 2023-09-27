@@ -7,15 +7,18 @@ import com.dbaotrung.example.coffee.order.dto.OrderDto;
 import com.dbaotrung.example.coffee.order.dto.QueueCountDto;
 import com.dbaotrung.example.coffee.order.model.CoffeeOrder;
 import com.dbaotrung.example.coffee.order.model.OrderItem;
+import com.dbaotrung.example.coffee.order.model.OrderQueue;
 import com.dbaotrung.example.coffee.order.model.OrderStatus;
 import com.dbaotrung.example.coffee.order.repository.CoffeeOrderRepository;
+import com.dbaotrung.example.coffee.order.repository.OrderQueueRepository;
+import jakarta.persistence.LockModeType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CoffeeOrderRepository coffeeOrderRepository;
+    @Autowired
+    private OrderQueueRepository orderQueueRepository;
     @Autowired
     private StoreServiceClient storeServiceClient;
     @Autowired
@@ -56,36 +61,103 @@ public class OrderServiceImpl implements OrderService {
         // Put to queue
         var queueCount = findSuitableQueue(store, orderDto);
         coffeeOrder.setQueueId(queueCount.getQueueId());
-        coffeeOrder.setQueueIndex(queueCount.getCount() + 1);
         return OrderDto.fromEntity(coffeeOrderRepository.save(coffeeOrder));
     }
 
+    @Override
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    public OrderDto processNextOrder() {
+        var queues = orderQueueRepository.findAllByHavingOrderProcessing(false);
+        if (queues.isEmpty()) {
+            return null;
+        }
+        for (var queue: queues) {
+            var orderOptional = coffeeOrderRepository.findFirstByQueueIdOrderByIdAsc(queue.getId());
+            if (orderOptional.isEmpty()) {
+                continue;
+            }
+            var order = orderOptional.get();
+            order.setOrderStatus(OrderStatus.PROCESSING);
+            order = coffeeOrderRepository.save(order);
+            queue.setHavingOrderProcessing(true);
+            orderQueueRepository.save(queue);
+            return OrderDto.fromEntity(order);
+        }
+        return null;
+    }
+
+    @Override
+    public OrderDto completeOrder(long orderId) {
+        var orderOptional = coffeeOrderRepository.findById(orderId);
+        if (orderOptional.isEmpty()) {
+            return null;
+        }
+        var order = orderOptional.get();
+        var queueId = order.getQueueId();
+        order.setOrderStatus(OrderStatus.COMPLETED);
+        order.setQueueId(0);
+        order = coffeeOrderRepository.save(order);
+        var queueOptional = orderQueueRepository.findById(queueId);
+        queueOptional.ifPresent( q -> {
+            q.setHavingOrderProcessing(false);
+            orderQueueRepository.save(q);
+        });
+        return OrderDto.fromEntity(order);
+    }
+
     private QueueCountDto findSuitableQueue(CoffeeStoreDto store, OrderDto orderDto) {
+        List<OrderQueue> orderQueues = orderQueueRepository.findAllByStoreId(store.getId());
         List<Map<String, Object>> queueCountDtos = coffeeOrderRepository.loadQueueCount(orderDto.getStoreId());
-        log.info("Queue count {}", queueCountDtos);
+        log.info("Queue item count in DB {}", queueCountDtos);
+        // Fill up missing queue
         int maxQueue = store.getMaxNoQueues();
-        String minQueueId = "";
+        orderQueues = fillingMissingQueueInDb(orderQueues, maxQueue, store.getId());
+        // Find min queue to put order
+        Long minQueueId = null;
         int minQueueCount = Integer.MAX_VALUE;
-        for (var i = 0; i < maxQueue; i++) {
-            var queueId = "store-" + store.getId() + "-queue-" + (i + 1);
+        for (var queue : orderQueues) {
+            if (queue.getQueueIndex() > maxQueue) {
+                continue;
+            }
             // Find queue in database
             QueueCountDto foundQueue = null;
             for (var queueCount : queueCountDtos) {
-                var dbQueueId = (String) queueCount.get("queueid");
-                if (dbQueueId.equalsIgnoreCase(queueId)) {
+                var countedQueueId = Long.valueOf(queueCount.get("queueid").toString());
+                if (queue.getId() == countedQueueId) {
                     var dbCount = Integer.valueOf(queueCount.get("cnt").toString());
-                    foundQueue = new QueueCountDto(dbQueueId, dbCount);
+                    foundQueue = new QueueCountDto(countedQueueId, dbCount);
                     break;
                 }
             }
             if (foundQueue == null) {
-                return new QueueCountDto(queueId, 0);
+                return new QueueCountDto(queue.getId(), 0);
             }
             if (foundQueue.getCount() < minQueueCount) {
-                minQueueId = queueId;
+                minQueueId = queue.getId();
                 minQueueCount = foundQueue.getCount();
             }
         }
         return new QueueCountDto(minQueueId, minQueueCount);
+    }
+
+    private List<OrderQueue> fillingMissingQueueInDb(List<OrderQueue> orderQueues, int maxQueue, long storeId) {
+        // Fill up missing queue
+        for (var i = 0; i < maxQueue; i++) {
+            boolean needCreate = true;
+            for (var queue : orderQueues) {
+                if (queue.getQueueIndex() == i + 1) {
+                    needCreate = false;
+                    break;
+                }
+            }
+            if (needCreate) {
+                var newQueue = new OrderQueue();
+                newQueue.setQueueIndex(i + 1);
+                newQueue.setStoreId(storeId);
+                orderQueues.add(orderQueueRepository.save(newQueue));
+            }
+        }
+        // Return
+        return orderQueues;
     }
 }
