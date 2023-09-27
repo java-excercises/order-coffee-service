@@ -24,4 +24,6 @@ public class CoffeeOrder {
     private double subTotal;
     private double vat;
     private double total;
+    private long storeId;
+    private long queueId;
 }

@@ -48,3 +48,11 @@ springdoc:
   api-docs:
     path: /v3/api-docs
     enabled: true
+
+feign:
+  store:
+    name: storeservice
+    url: http://localhost:9083/stores
+  product:
+    name: productservice
+    url: http://localhost:9083/products
