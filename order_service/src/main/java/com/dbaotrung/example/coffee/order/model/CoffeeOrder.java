@@ -24,6 +24,8 @@ public class CoffeeOrder {
     private double subTotal;
     private double vat;
     private double total;
+    @Column(name = "store_id")
     private long storeId;
+    @Column(name = "queue_id")
     private long queueId;
 }
