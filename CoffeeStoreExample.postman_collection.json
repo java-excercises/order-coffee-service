@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "5287f907-86da-4f81-a46f-f97a92a57639",
+		"name": "CoffeeStoreExample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "690350"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "load products",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9083/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Product 03\",\r\n    \"originalPrice\": 16.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9083/products/create-or-update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"products",
+								"create-or-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9083/products/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9083/products/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stores",
+			"item": [
+				{
+					"name": "load stores",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9083/stores/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"stores",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add Store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Store 01\",\r\n    \"storeLocation\": \"HCM\",\r\n    \"maxNoQueues\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9083/stores/create-or-update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"stores",
+								"create-or-update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete store",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9083/stores/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"stores",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9083/stores/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9083",
+							"path": [
+								"stores",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Place order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"items\": [\r\n    {\r\n        \"product\": { \"id\": 1 },\r\n        \"sellingPrice\": 10,\r\n        \"quantity\": 10\r\n    }\r\n  ],\r\n  \"subTotal\": 100,\r\n  \"vat\": 10,\r\n  \"total\": 110,\r\n  \"storeId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9082/orders/place-order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9082",
+							"path": [
+								"orders",
+								"place-order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "storeId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9082/orders/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9082",
+							"path": [
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process next order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9082/orders/process-next",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9082",
+							"path": [
+								"orders",
+								"process-next"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete order",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "orderId",
+									"value": "155",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9082/orders/complete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9082",
+							"path": [
+								"orders",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
