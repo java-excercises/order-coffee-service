@@ -1,0 +1,27 @@
+services:
+  postgresql:
+    image: "postgres:16"
+    ports:
+      - "5433:5432"
+    container_name: postgresql
+    environment:
+    - POSTGRES_USER=postgres # The PostgreSQL user (useful to connect to the database)
+    - POSTGRES_PASSWORD=postgres # The PostgreSQL password (useful to connect to the database)
+    - POSTGRES_DB=coffee_shop # The PostgreSQL default database (automatically created at first launch)
+  storeservice:
+    build: store_service/
+    ports:
+      - "9083:9083"
+    container_name: store_service
+    depends_on:
+      - postgresql
+    command: java -jar /app/store_service-0.0.1-SNAPSHOT.jar --spring.datasource.url=jdbc:postgresql://postgresql:5432/coffee_shop
+  orderservice:
+    build: order_service/
+    ports:
+      - "9082:9082"
+    container_name: order_service
+    depends_on:
+      - postgresql
+    command: java -jar /app/order_service-0.0.1-SNAPSHOT.jar --spring.datasource.url=jdbc:postgresql://postgresql:5432/coffee_shop
+
