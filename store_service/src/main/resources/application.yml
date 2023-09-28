@@ -58,9 +58,15 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: update
+          auto: none
       show-sql: true
-      generate-ddl: true
+      generate-ddl: false
+  # Liquibase settings
+  liquibase:
+    change-log: classpath:db/changelog/sql-changelog.xml
+    drop-first: false
+    enabled: true
+    contexts: development
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

@@ -82,6 +82,8 @@ dependencies {
     // Common
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: "${beanutilsVersion}"
     implementation group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
+    // Liquibase
+    implementation group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
 
     // Test
     testImplementation('org.springframework.boot:spring-boot-starter-test')
