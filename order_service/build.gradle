@@ -81,12 +81,16 @@ dependencies {
 	implementation group: 'org.hibernate.orm', name: 'hibernate-hikaricp', version: "${hibernateHikaricpVersion}"
 	// Spring doc
 	implementation (group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: "$springDocApiVersion")
+
 	// Common
 	implementation group: 'commons-beanutils', name: 'commons-beanutils', version: "${beanutilsVersion}"
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
+
 	// Rest client
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "${cloudOpenfeignVersion}"
 
+	// Liquibase
+	implementation group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
 	// Test
 	testImplementation ('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.5.0'
