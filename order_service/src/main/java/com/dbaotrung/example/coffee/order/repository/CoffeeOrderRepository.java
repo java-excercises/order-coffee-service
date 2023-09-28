@@ -1,6 +1,9 @@
 package com.dbaotrung.example.coffee.order.repository;
 
 import com.dbaotrung.example.coffee.order.model.CoffeeOrder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +21,7 @@ public interface CoffeeOrderRepository extends JpaRepository<CoffeeOrder, Long> 
     List<Map<String, Object>> loadQueueCount(@Param("storeId") long storeId);
 
     Optional<CoffeeOrder> findFirstByQueueIdOrderByIdAsc(long queueId);
+
+    Page<CoffeeOrder> findAllByStoreId(long storeId, Pageable pageable);
+    List<CoffeeOrder> findAllByStoreId(long storeId, Sort sort);
 }

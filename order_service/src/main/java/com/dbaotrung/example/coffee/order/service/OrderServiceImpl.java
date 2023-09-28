@@ -14,6 +14,10 @@ import com.dbaotrung.example.coffee.order.repository.OrderQueueRepository;
 import jakarta.persistence.LockModeType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,6 +107,21 @@ public class OrderServiceImpl implements OrderService {
             orderQueueRepository.save(q);
         });
         return OrderDto.fromEntity(order);
+    }
+
+    @Override
+    public Page<OrderDto> loadAllOrdersByStore(int pageSize, int pageIndex, List<Sort.Order> orders, long storeId) {
+        log.info("Search orders of a store");
+        if (pageSize > 0 && pageIndex >= 0) {
+            PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by(orders));
+            log.info("Load by page {} and page index {} without search text.", pageSize, pageIndex);
+            return coffeeOrderRepository.findAllByStoreId(storeId, pageRequest).map(OrderDto::fromEntity);
+        } else {
+            Sort sort = Sort.by(orders);
+            log.info("Load without search text and order {}", orders);
+            List<CoffeeOrder> entities = coffeeOrderRepository.findAllByStoreId(storeId, sort);
+            return new PageImpl<>(entities.stream().map(OrderDto::fromEntity).toList());
+        }
     }
 
     private QueueCountDto findSuitableQueue(CoffeeStoreDto store, OrderDto orderDto) {
